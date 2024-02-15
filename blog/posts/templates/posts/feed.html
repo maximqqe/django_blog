@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% for item in posts %}
+        <div class="wrapper-post m-1 p-3 mb-4" style="background-color: #B9B4C7; border-radius: 8px;">
+            <h3 class="mb-2"><i>{{item.title|title}}</i></h3>
+            <p style="text-indent: 54px;; font-size: 18px;">{{item.content|truncatechars:405}}</p>
+            <p class="text-tertiary"><i>{{item.created_at}}</i></p>
+            <a href="#" class="btn btn-light" style="border: 2px solid #777;">Read more</a>
+        </div>
+    {% endfor %}
+{% endblock %}
+
+{% block script %}
+{% endblock %}
