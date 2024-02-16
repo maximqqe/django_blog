@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="wrapper-post m-1 p-3 mb-4" style="background-color: #B9B4C7; border-radius: 8px;">
+            <h3 class="mb-4 text-center"><i>{{post.title|title}}</i></h3>
+            <p style="text-indent: 54px; font-size: 18px;">{{post.content}}</p>
+            <p class="mt-2 mb-0">author:
+                {% if post.author.username == 'deleted' %}
+                <span class="text-danger">{{post.author}}</span>
+                {% else %}
+                <a href="#" class="text-dark">{{post.author}}</a>
+                {% endif %}
+            </p>
+            <p class="text-tertiary"><i>{{post.created_at}}</i></p>
+    </div>
+
+{% endblock %}
