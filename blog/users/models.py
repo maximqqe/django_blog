@@ -3,7 +3,7 @@ from django.db import models
 
 
 class User(AbstractUser):
-    image = models.ImageField
+    image = models.ImageField(upload_to='users/profile_photo/', blank=True, null=True)
 
     class Meta:
         db_table = 'user'
