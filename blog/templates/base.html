@@ -27,6 +27,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'posts:feed' %}">Feed</a>
                 </li>
+                {% if user.is_authenticated %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                        aria-expanded="false">
@@ -41,9 +42,23 @@
                         <li><a class="dropdown-item" href="#">Add Post</a></li>
                     </ul>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'user:logout' %}">Log out</a>
+                </li>
+                {% if user.is_staff %}
                 <li class="nav-item">
                     <a class="nav-link" href="/admin">Admin panel</a>
                 </li>
+                {% endif %}
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'user:login' %}">Log in</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'user:registration' %}">Register</a>
+                </li>
+                {% endif %}
             </ul>
             <form class="d-flex" role="search">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
