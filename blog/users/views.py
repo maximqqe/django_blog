@@ -1,9 +1,12 @@
+import os
+
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.views.generic import DetailView
 
-from users.forms import RegistrationForm, LoginForm
+from blog.settings import BASE_DIR
+from users.forms import RegistrationForm, LoginForm, ProfileChangeForm
 from users.models import User
 
 
@@ -61,3 +64,31 @@ class ProfileView(DetailView):
     model = User
     template_name = 'users/profile.html'
     context_object_name = 'user'
+
+
+@login_required
+def profile_change_view(request):
+    if request.method == "POST":
+        form = ProfileChangeForm(data=request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+
+            if 'image' in request.FILES:
+                file_path = BASE_DIR / request.user.image.url
+                if os.path.exists(file_path):
+                    os.remove(file_path)
+
+                request.user.image = request.FILES['image']
+            request.user.save()
+
+            return redirect(to='user:profile', pk=request.user.pk)
+
+    else:
+        form = ProfileChangeForm()
+
+    context = {
+        'form': form,
+    }
+
+    return render(request, template_name='users/change.html', context=context)
+
