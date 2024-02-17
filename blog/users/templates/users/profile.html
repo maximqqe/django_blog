@@ -17,7 +17,7 @@
             <p style="font-size: 18px; font-weight: 500; margin: 10px 0px;">name: {{user.first_name|title}} {{user.last_name|title}}</p>
             <p style="font-size: 18px; font-weight: 500; margin: 10px 0px;">email: {{user.email}}</p>
             <p style="font-size: 18px; font-weight: 500; margin: 10px 0px;">joined: {{user.date_joined}}</p>
-            <a href="#" class="text-dark" style="font-size: 18px; margin: 20px 0px; font-weight: 400;">show {{user.username}}'s posts</a>
+            <a href="{% url 'posts:author' user.username %}" class="text-dark" style="font-size: 18px; margin: 20px 0px; font-weight: 400;">show {{user.username}}'s posts</a>
         </div>
 </div>
 {% endblock %}
