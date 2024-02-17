@@ -1,7 +1,10 @@
 from django.contrib import auth
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from django.views.generic import DetailView
 
 from users.forms import RegistrationForm, LoginForm
+from users.models import User
 
 
 def registration_view(request):
@@ -48,6 +51,13 @@ def login_view(request):
     return render(request, 'users/login.html', context=context)
 
 
+@login_required
 def logout_view(request):
     auth.logout(request)
     return redirect(to='posts:feed')
+
+
+class ProfileView(DetailView):
+    model = User
+    template_name = 'users/profile.html'
+    context_object_name = 'user'

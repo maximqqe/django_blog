@@ -9,7 +9,7 @@
                 {% if item.author.username == 'deleted' %}
                 <span class="text-danger">{{item.author}}</span>
                 {% else %}
-                <a href="#" class="text-dark">{{item.author}}</a>
+                <a href="{% url 'user:profile' item.author.pk %}" class="text-dark">{{item.author}}</a>
                 {% endif %}
             </p>
             <p class="text-tertiary"><i>{{item.created_at}}</i></p>
