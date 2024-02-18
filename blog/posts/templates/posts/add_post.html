@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="text-light text-center">Add Post</h1>
+<form action="{% url 'posts:add_post' %}" method='post' class="text-light p-5 text-center">
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+    <div class="alert alert-danger" role="alert">
+        {{ form.non_field_errors }}
+    </div>
+    {% endif %}
+    <div style="width: 500px; margin: 10px auto;" class="form-group">
+        <label for="title" style="font-size: 22px; ">Title</label>
+        <input type="text" name="title" id="title" class="form-control">
+    </div>
+    {% if form.title.errors %}
+    <div class="alert mt-2 mb-2 alert-danger alert-dismissible fade show">{{ form.title.errors }}</div>
+    {% endif %}
+    <div style="width: 500px; margin: 10px auto;" class="form-group">
+        <label for="content" style="font-size: 22px; ">Content</label>
+        <textarea name="content" id="content" rows="5" class="form-control"></textarea>
+    </div>
+    {% if form.content.errors %}
+    <div class="alert mt-2 mb-2 alert-danger alert-dismissible fade show">{{ form.content.errors }}</div>
+    {% endif %}
+    <button class="submit btn btn-success" style="width: 140px; font-size: 18px; margin-top: 20px;">Submit</button>
+</form>
+{% endblock %}
