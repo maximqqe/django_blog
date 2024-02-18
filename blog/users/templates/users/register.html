@@ -6,24 +6,41 @@
 <h1 class="text-center text-light fw-700">Registration</h1>
 <form class="text-center mt-2" method="POST">
     {% csrf_token %}
+    {% if form.non_field_errors %}
+    <div class="alert alert-danger" role="alert">
+        {{ form.non_field_errors }}
+    </div>
+    {% endif %}
     <div class="form-group mb-3">
         <label for="username" class="text-light" style="font-size: 22px;">Username</label>
         <input type="text" class="form-control" id="username" name="username" style="width:300px; margin: 10px auto;">
     </div>
+    {% if form.username.errors %}
+        <div class="alert mt-2 mb-2 alert-danger alert-dismissible fade show">{{ form.username.errors }}</div>
+    {% endif %}
     <div class="form-group">
         <label for="email" class="text-light" style="font-size: 22px;">Email</label>
         <input type="email" class="form-control" id="email" name="email" style="width:300px; margin: 10px auto;">
     </div>
+    {% if form.email.errors %}
+        <div class="alert mt-2 mb-2 alert-danger alert-dismissible fade show">{{ form.email.errors }}</div>
+    {% endif %}
     <div class="form-group mb-3">
         <label for="password1" class="text-light" style="font-size: 22px;">Password</label>
         <input type="password" class="form-control" id="password1" name="password1"
                style="width:300px; margin: 10px auto;">
     </div>
+    {% if form.password1.errors %}
+        <div class="alert mt-2 mb-2 alert-danger alert-dismissible fade show">{{ form.password1.errors }}</div>
+    {% endif %}
     <div class="form-group mb-3">
         <label for="password2" class="text-light" style="font-size: 22px;">Repeat Password</label>
         <input type="password" class="form-control" id="password2" name="password2"
                style="width:300px; margin: 10px auto;">
     </div>
+    {% if form.password2.errors %}
+        <div class="alert mt-2 mb-2 alert-danger alert-dismissible fade show">{{ form.password2.errors }}</div>
+    {% endif %}
     <button type="submit" class="btn btn-success" style="margin-top: 10px; width: 140px; font-size: 22px;">Submit
     </button>
 </form>

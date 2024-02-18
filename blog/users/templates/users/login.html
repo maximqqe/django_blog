@@ -6,15 +6,29 @@
 <h1 class="text-center text-light fw-700">Login</h1>
 <form class="text-center mt-2" method="POST">
     {% csrf_token %}
+    {% if form.non_field_errors %}
+    <div class="alert alert-danger" role="alert">
+        {{ form.non_field_errors }}
+    </div>
+    {% endif %}
+    {% if request.GET.next %}
+    <input type="hidden" name="next" value="{{ request.GET.next }}">
+    {% endif %}
     <div class="form-group mb-3">
         <label for="username" class="text-light" style="font-size: 22px;">Username</label>
         <input type="text" class="form-control" id="username" name="username" style="width:300px; margin: 10px auto;">
     </div>
+    {% if form.username.errors %}
+        <div class="alert mt-2 mb-2 alert-danger alert-dismissible fade show">{{ form.username.errors }}</div>
+    {% endif %}
     <div class="form-group mb-3">
         <label for="password" class="text-light" style="font-size: 22px;">Password</label>
         <input type="password" class="form-control" id="password" name="password"
                style="width:300px; margin: 10px auto;">
     </div>
+    {% if form.password.errors %}
+        <div class="alert mt-2 mb-2 alert-danger alert-dismissible fade show">{{ form.password.errors }}</div>
+    {% endif %}
     <button type="submit" class="btn btn-success" style="margin-top: 10px; width: 140px; font-size: 22px;">Submit
     </button>
 </form>
