@@ -12,8 +12,9 @@
                 {% endif %}
             </p>
             <p class="text-tertiary"><i>{{item.created_at}}</i></p>
-            <div class="container p-0">
-                <p>{{item.count_likes}} likes {% if item in liked_posts %}(you liked){% endif %}</p>
+            <div class="d-flex p-0">
+                <p style="margin-right: 10px;">{{item.count_likes}} likes {% if item in liked_posts %}(you liked){% endif %}</p>
+                <p>{{item.count_comments}} comments</p>
             </div>
             <a href="{% url 'posts:post' item.pk %}" class="btn btn-light" style="border: 1px solid #777;">Read Post</a>
 

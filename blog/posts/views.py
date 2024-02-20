@@ -3,7 +3,7 @@ from django.contrib.postgres.search import SearchVector
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
 
-from posts.form import AddPostForm
+from posts.form import AddPostForm, CommentForm
 from posts.models import Post, PostLike
 from users.models import User
 
@@ -44,6 +44,7 @@ class PostView(DetailView):
             post = self.object
             liked = PostLike.objects.filter(user=user, post=post).exists()
             context['liked'] = liked
+            context['form'] = CommentForm
         return context
 
 
@@ -98,3 +99,15 @@ def like_post_view(request, post_id):
         PostLike.objects.create(user=request.user, post=post)
 
     return redirect(to=request.META['HTTP_REFERER'])
+
+
+@login_required
+def comment_post_view(request, post_id):
+    form = CommentForm(data=request.POST)
+    if form.is_valid():
+        comment = form.save(commit=False)
+        comment.post = Post.objects.get(pk=post_id)
+        comment.user = request.user
+        comment.save()
+
+    return redirect(to='posts:post', pk=post_id)

@@ -25,8 +25,23 @@ class Post(models.Model):
     def count_likes(self):
         return PostLike.objects.filter(post=self).count()
 
+    @property
+    def count_comments(self):
+        return PostComment.objects.filter(post=self).count()
+
+    @property
+    def get_comments(self):
+        return PostComment.objects.filter(post=self).order_by('-pk')
+
 
 class PostLike(models.Model):
+    post = models.ForeignKey(to=Post, on_delete=models.CASCADE)
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+class PostComment(models.Model):
+    text = models.TextField(max_length=2000, null=False, blank=False)
     post = models.ForeignKey(to=Post, on_delete=models.CASCADE)
     user = models.ForeignKey(to=User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)

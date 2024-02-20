@@ -20,5 +20,30 @@
                     <a href="{% url 'posts:like' post.id %}" class="btn btn-light" style="border: 1px solid #777;">Like</a>
                 {% endif %}
             {% endif %}
+            <div style="border-top: 2px solid black; margin-top: 20px; padding-top:20px;" class="wrapper-comments">
+                <h3 class="text-center">Comments</h3>
+                 {% if request.user.is_authenticated %}
+                <form action="{% url 'posts:comment' post.id %}" method="post" class="d-flex mt-4 mb-4">
+                    {% csrf_token %}
+                    <button class="btn btn-light" type="submit" style="margin-right: 32px;">Add Comment</button>
+                    <textarea name="text" id="text" class="form-control" rows="1" style="width: 600px;" placeholder="type here"></textarea>
+                    {% if form.text.errors %}
+                    <div class="alert mt-2 mb-2 alert-danger alert-dismissible fade show">{{ form.text.errors }}</div>
+                    {% endif %}
+                </form>
+                {% else %}
+                <h5 class="text-center"><i>(Log in to comment)</i></h5>
+                {% endif %}
+            </div>
+            {% for item in post.get_comments %}
+                <div class="wrapper-comment" style="font-size: 18px; padding: 8px">
+                    <p class="mt-2 mb-0">
+                        <a href="{% url 'user:profile' item.user.pk %}" class="text-dark">{{item.user}}</a>:
+                     {{item.text}}
+                    </p>
+                    <p style="font-size: 18px;">{{item.created_at}}</p>
+                </div>
+            {% endfor %}
     </div>
+
 {% endblock %}
