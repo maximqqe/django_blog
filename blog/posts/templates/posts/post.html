@@ -12,6 +12,13 @@
                 {% endif %}
             </p>
             <p class="text-tertiary"><i>{{post.created_at}}</i></p>
+            <p>{{post.count_likes}} likes </p>
+            {% if request.user.is_authenticated%}
+                {% if liked %}
+                    <a href="{% url 'posts:like' post.id %}" class="btn btn-dark" style="border: 1px solid #777;">Unlike</a>
+                {% else %}
+                    <a href="{% url 'posts:like' post.id %}" class="btn btn-light" style="border: 1px solid #777;">Like</a>
+                {% endif %}
+            {% endif %}
     </div>
-
 {% endblock %}

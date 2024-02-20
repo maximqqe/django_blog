@@ -19,4 +19,14 @@ class Post(models.Model):
         verbose_name_plural = 'posts'
 
     def __str__(self):
-        return f'{self.title} | {self.created_at}'
+        return f'{self.title}'
+
+    @property
+    def count_likes(self):
+        return PostLike.objects.filter(post=self).count()
+
+
+class PostLike(models.Model):
+    post = models.ForeignKey(to=Post, on_delete=models.CASCADE)
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)

@@ -2,9 +2,8 @@
 
 {% block content %}
     {% for item in posts %}
-        <div class="wrapper-post m-1 p-3 mb-4" style="background-color: #B9B4C7; border-radius: 8px;">
-            <h3 class="mb-2"><i>{{item.title|title}}</i></h3>
-            <p style="text-indent: 54px; font-size: 18px;">{{item.content|truncatechars:405}}</p>
+        <div class="wrapper-post m-1 p-4 mb-4" style="background-color: #B9B4C7; border-radius: 8px;">
+            <h3 class="mb-4"><i>{{item.title|title}}</i></h3>
             <p class="mt-2 mb-0">author:
                 {% if item.author.username == 'deleted' %}
                 <span class="text-danger">{{item.author}}</span>
@@ -13,10 +12,11 @@
                 {% endif %}
             </p>
             <p class="text-tertiary"><i>{{item.created_at}}</i></p>
-            <a href="{% url 'posts:post' item.pk %}" class="btn btn-light" style="border: 2px solid #777;">Read more</a>
+            <div class="container p-0">
+                <p>{{item.count_likes}} likes {% if item in liked_posts %}(you liked){% endif %}</p>
+            </div>
+            <a href="{% url 'posts:post' item.pk %}" class="btn btn-light" style="border: 1px solid #777;">Read Post</a>
+
         </div>
     {% endfor %}
-{% endblock %}
-
-{% block script %}
 {% endblock %}

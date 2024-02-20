@@ -1,11 +1,7 @@
-import os
-
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.views.generic import DetailView
-
-from blog.settings import BASE_DIR
 from users.forms import RegistrationForm, LoginForm, ProfileChangeForm
 from users.models import User
 
@@ -74,11 +70,9 @@ def profile_change_view(request):
             form.save()
 
             if 'image' in request.FILES:
-                file_path = BASE_DIR / request.user.image.url
-                if os.path.exists(file_path):
-                    os.remove(file_path)
-
+                request.user.image.delete()
                 request.user.image = request.FILES['image']
+
             request.user.save()
 
             return redirect(to='user:profile', pk=request.user.pk)

@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
 
 from posts.form import AddPostForm
-from posts.models import Post
+from posts.models import Post, PostLike
 from users.models import User
 
 
@@ -16,11 +16,35 @@ class FeedView(ListView):
     def get_queryset(self):
         return Post.objects.all().order_by("-id")
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+
+        if user.is_authenticated:
+            liked_posts = []
+            posts = Post.objects.all()
+            for post in posts:
+                liked = PostLike.objects.filter(user=user, post=post).exists()
+                if liked:
+                    liked_posts.append(post)
+            context['liked_posts'] = liked_posts
+        return context
+
 
 class PostView(DetailView):
     model = Post
     template_name = 'posts/post.html'
     context_object_name = 'post'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+
+        if user.is_authenticated:
+            post = self.object
+            liked = PostLike.objects.filter(user=user, post=post).exists()
+            context['liked'] = liked
+        return context
 
 
 class AuthorView(ListView):
@@ -63,3 +87,14 @@ def add_post_view(request):
         'form': form,
     }
     return render(request, 'posts/add_post.html', context=context)
+
+
+@login_required
+def like_post_view(request, post_id):
+    post = Post.objects.get(pk=post_id)
+    if PostLike.objects.filter(user=request.user, post=post).exists():
+        PostLike.objects.filter(user=request.user, post=post).delete()
+    else:
+        PostLike.objects.create(user=request.user, post=post)
+
+    return redirect(to=request.META['HTTP_REFERER'])
