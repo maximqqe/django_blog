@@ -1,8 +1,8 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.postgres.search import SearchVector
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
-
 from posts.form import AddPostForm, CommentForm
 from posts.models import Post, PostLike
 from users.models import User
@@ -111,3 +111,14 @@ def comment_post_view(request, post_id):
         comment.save()
 
     return redirect(to='posts:post', pk=post_id)
+
+
+class LikedPostsView(LoginRequiredMixin, ListView):
+    model = Post
+    template_name = 'posts/liked.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Post.objects.filter(postlike__user=user)
+        return queryset

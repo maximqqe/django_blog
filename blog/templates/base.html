@@ -38,7 +38,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="{% url 'user:profile' request.user.pk %}">My Profile</a></li>
-                        <li><a class="dropdown-item" href="#">Liked Posts</a></li>
+                        <li><a class="dropdown-item" href="{% url 'posts:liked' %}">Liked Posts</a></li>
                         <li>
                     </ul>
                 </li>
